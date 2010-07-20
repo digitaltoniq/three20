@@ -176,3 +176,14 @@ void TTAlert(NSString* message) {
                                              otherButtonTitles:nil] autorelease];
   [alert show];
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+CGSize TTCoreOffsetMake(CGFloat width, CGFloat height) {
+	// Core drawing appears to have inverted at version 4.0
+	// Note: TTOSVersionIsAtLeast does not work here the way it is currently written
+	CGSize size; size.width = width;
+	static const CGFloat kEpsilon = 0.0000001;
+	size.height = TTOSVersion() >= (4.0 - kEpsilon) ? height : -height;
+	return size;
+}
+

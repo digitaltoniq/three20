@@ -24,6 +24,8 @@
 // Core
 #import "Three20Core/TTCorePreprocessorMacros.h"
 
+// UI
+#import "Three20UICommon/TTGlobalUICommon.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -226,8 +228,8 @@
   }
 
   if (_shadowColor) {
-    CGSize offset = CGSizeMake(_shadowOffset.width, -_shadowOffset.height);
-    CGContextSetShadowWithColor(ctx, offset, 0, _shadowColor.CGColor);
+	  CGSize offset = TTCoreOffsetMake(_shadowOffset.width, _shadowOffset.height);
+	  CGContextSetShadowWithColor(ctx, offset, 0, _shadowColor.CGColor);
   }
 
   if (_color) {
