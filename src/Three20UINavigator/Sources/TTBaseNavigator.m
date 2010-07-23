@@ -44,9 +44,12 @@ static NSString* kNavigatorHistoryKey           = @"TTNavigatorHistory";
 static NSString* kNavigatorHistoryTimeKey       = @"TTNavigatorHistoryTime";
 static NSString* kNavigatorHistoryImportantKey  = @"TTNavigatorHistoryImportant";
 
+// A session is asymetric if we do not make it through a restore, app usage, persist lifecycle successfully
+static NSString* kNavigatorHistoryLastSessionAsymetricKey  = @"TTNavigatorHistoryLastSessionAsymetric";
+
 UIKIT_EXTERN NSString *const UIApplicationDidEnterBackgroundNotification __attribute__((weak_import));
 UIKIT_EXTERN NSString *const UIApplicationWillEnterForegroundNotification __attribute__((weak_import));
-
+ 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -696,6 +699,10 @@ UIKIT_EXTERN NSString *const UIApplicationWillEnterForegroundNotification __attr
     [defaults removeObjectForKey:kNavigatorHistoryTimeKey];
     [defaults removeObjectForKey:kNavigatorHistoryImportantKey];
   }
+
+  // Made it through a retore, a session and now a persist succesfully, save that fact
+  [defaults setValue:[NSNumber numberWithBool:NO] forKey:kNavigatorHistoryLastSessionAsymetricKey];
+
   [defaults synchronize];
 }
 
@@ -703,6 +710,19 @@ UIKIT_EXTERN NSString *const UIApplicationWillEnterForegroundNotification __attr
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (UIViewController*)restoreViewControllers {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+
+  BOOL lastSessionAsymetric = [[defaults objectForKey:kNavigatorHistoryLastSessionAsymetricKey] boolValue];
+  if (lastSessionAsymetric) {
+	#ifdef DEBUG
+	  TTDWARNING(@"ASYMETRIC SESSION FAILURE");
+    #else
+	  return nil; // If not in DEBUG, don't try to restore -- things went badly last time...
+    #endif
+  }
+  // Start by indicating the session is asymetric in case we crash any time between now and persisting nav state
+  [defaults setValue:[NSNumber numberWithBool:YES] forKey:kNavigatorHistoryLastSessionAsymetricKey];
+  [defaults synchronize];
+
   NSDate* timestamp = [defaults objectForKey:kNavigatorHistoryTimeKey];
   NSArray* path = [defaults objectForKey:kNavigatorHistoryKey];
   BOOL important = [[defaults objectForKey:kNavigatorHistoryImportantKey] boolValue];
