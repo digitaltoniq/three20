@@ -510,7 +510,7 @@ static const CGFloat kBannerViewHeight = 22;
           } else if (newIndexPath.length == 2) {
             TTDCONDITIONLOG(TTDFLAG_TABLEVIEWMODIFICATIONS, @"UPDATING ROW AT %@", newIndexPath);
             [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                              withRowAnimation:UITableViewRowAnimationTop];
+                              withRowAnimation:UITableViewRowAnimationFade];
           }
           [self invalidateView];
         } else {
