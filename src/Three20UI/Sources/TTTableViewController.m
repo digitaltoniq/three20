@@ -70,6 +70,7 @@ static const CGFloat kBannerViewHeight = 22;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
     _lastInterfaceOrientation = self.interfaceOrientation;
+    _tableViewStyle = UITableViewStylePlain;
   }
 
   return self;
@@ -80,15 +81,6 @@ static const CGFloat kBannerViewHeight = 22;
 - (id)initWithStyle:(UITableViewStyle)style {
   if (self = [self initWithNibName:nil bundle:nil]) {
     _tableViewStyle = style;
-  }
-
-  return self;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-- (id)init {
-  if (self = [self initWithStyle:UITableViewStylePlain]) {
   }
 
   return self;
@@ -518,7 +510,7 @@ static const CGFloat kBannerViewHeight = 22;
           } else if (newIndexPath.length == 2) {
             TTDCONDITIONLOG(TTDFLAG_TABLEVIEWMODIFICATIONS, @"UPDATING ROW AT %@", newIndexPath);
             [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                              withRowAnimation:UITableViewRowAnimationTop];
+                              withRowAnimation:UITableViewRowAnimationFade];
           }
           [self invalidateView];
         } else {

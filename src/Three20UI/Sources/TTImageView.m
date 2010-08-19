@@ -211,7 +211,9 @@
         // Put the default image in place while waiting for the request to load
         if (_defaultImage && self.image != _defaultImage) {
           self.image = _defaultImage;
-        }
+        } else {
+			self.image = nil;
+		}
       }
     }
   }

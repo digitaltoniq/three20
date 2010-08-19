@@ -51,7 +51,7 @@ UIDeviceOrientation TTDeviceOrientation();
  * On iPhone/iPod touch
  * Checks if the orientation is portrait, landscape left, or landscape right.
  * This helps to ignore upside down and flat orientations.
- * 
+ *
  * On iPad:
  * Always returns Yes.
  */
@@ -86,6 +86,11 @@ CGFloat TTKeyboardHeightForOrientation(UIInterfaceOrientation orientation);
  * A convenient way to show a UIAlertView with a message.
  */
 void TTAlert(NSString* message);
+
+/**
+ * Creates an offset (size) for core drawing with height inverted appropriately (y-axis inverted at iOS4)
+ */
+CGSize TTCoreOffsetMake(CGFloat width, CGFloat height);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

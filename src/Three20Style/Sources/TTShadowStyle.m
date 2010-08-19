@@ -21,9 +21,12 @@
 #import "Three20Style/TTShape.h"
 
 // Core
+#import "Three20Core/NSStringAdditions.h"
 #import "Three20Core/TTCorePreprocessorMacros.h"
 #import "Three20Core/TTGlobalCoreRects.h"
 
+// UI
+#import "Three20UICommon/TTGlobalUICommon.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,9 +104,27 @@
   CGContextRef ctx = UIGraphicsGetCurrentContext();
   CGContextSaveGState(ctx);
 
+/* Three 20 Way
+  // Due to a bug in OS versions 3.2 and 4.0, the shadow appears upside-down. It pains me to
+  // write this, but a lot of research has failed to turn up a way to detect the flipped shadow
+  // programmatically
+  float shadowYOffset = -_offset.height;
+  NSString *osVersion = [UIDevice currentDevice].systemVersion;
+  if ([osVersion versionStringCompare:@"3.2"] != NSOrderedAscending) {
+    shadowYOffset = _offset.height;
+  }
+
   [context.shape addToPath:context.frame];
-  CGContextSetShadowWithColor(ctx, CGSizeMake(_offset.width, -_offset.height), _blur,
-                              _color.CGColor);
+
+  CGContextSetShadowWithColor(ctx, CGSizeMake(_offset.width, shadowYOffset), _blur,
+*/
+
+	[context.shape addToPath:context.frame];
+	
+	// DT:DJS Way
+  CGSize offset = TTCoreOffsetMake(_offset.width, _offset.height);
+  CGContextSetShadowWithColor(ctx, offset, _blur, _color.CGColor);
+
   CGContextBeginTransparencyLayer(ctx, nil);
   [self.next draw:context];
   CGContextEndTransparencyLayer(ctx);
