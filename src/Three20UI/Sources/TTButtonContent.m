@@ -27,6 +27,9 @@
 // Core
 #import "Three20Core/TTCorePreprocessorMacros.h"
 
+// Style
+#import "Three20Style/TTPartStyle.h"
+#import "Three20Style/TTImageStyle.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +137,15 @@
   }
 }
 
+- (UIImage *)defaultImage {
+	UIImage *defaultImage = nil;
+	TTPartStyle* imagePartStyle = [_style styleForPart:@"image"];
+	if (imagePartStyle) {
+		TTImageStyle* imageStyle = [imagePartStyle.style firstStyleOfClass:[TTImageStyle class]];
+		defaultImage = imageStyle.defaultImage;
+	}
+	return defaultImage;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)reload {
@@ -149,7 +161,16 @@
     } else {
       TTURLRequest* request = [TTURLRequest requestWithURL:_imageURL delegate:self];
       request.response = [[[TTURLImageResponse alloc] init] autorelease];
-      [request send];
+
+		if (![request send]) {
+			UIImage *defaultImage = [self defaultImage];
+			// Put the default image in place while waiting for the request to load
+			if (defaultImage && self.image != defaultImage) {
+				self.image = defaultImage;
+			} else {
+				self.image = nil;
+			}
+		}
     }
   }
 }
