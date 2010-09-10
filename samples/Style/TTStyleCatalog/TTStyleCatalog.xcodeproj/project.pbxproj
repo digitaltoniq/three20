@@ -686,7 +686,8 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "TTStyleCatalog-Info.plist";
-				SDKROOT = iphoneos3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Debug;
 		};
@@ -696,7 +697,8 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				INFOPLIST_FILE = "TTStyleCatalog-Info.plist";
-				SDKROOT = iphoneos3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Release;
 		};
