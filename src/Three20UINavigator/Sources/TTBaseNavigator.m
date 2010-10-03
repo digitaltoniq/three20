@@ -49,7 +49,7 @@ static NSString* kNavigatorHistoryLastSessionAsymetricKey  = @"TTNavigatorHistor
 
 UIKIT_EXTERN NSString *const UIApplicationDidEnterBackgroundNotification __attribute__((weak_import));
 UIKIT_EXTERN NSString *const UIApplicationWillEnterForegroundNotification __attribute__((weak_import));
- 
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,12 +77,14 @@ UIKIT_EXTERN NSString *const UIApplicationWillEnterForegroundNotification __attr
                selector:@selector(applicationWillLeaveForeground:)
                    name:UIApplicationWillTerminateNotification
                  object:nil];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
     if (nil != &UIApplicationDidEnterBackgroundNotification) {
       [center addObserver:self
                  selector:@selector(applicationWillLeaveForeground:)
                      name:UIApplicationDidEnterBackgroundNotification
                    object:nil];
     }
+#endif
   }
   return self;
 }
